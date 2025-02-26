@@ -10,7 +10,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_oujda_shop_short_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.OujdaShop"
+        android:theme="@style/Base.Theme.OujdaShop"
         tools:targetApi="31">
         <activity
             android:name=".LoginActivity"

@@ -3,4 +3,31 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="background">#FFF5E0</color>
+    <!-- Primary Colors -->
+    <color name="primary">#E96516</color>
+    <color name="primaryVariant">#C77859</color>
+    <color name="onPrimary">#FFFFFF</color>  <!-- White text on primary -->
+
+    <!-- Secondary Colors -->
+    <color name="secondary">#03DAC6</color>  <!-- Teal -->
+    <color name="secondaryVariant">#018786</color>  <!-- Darker Teal -->
+    <color name="onSecondary">#FFFFFF</color>  <!-- White text on secondary -->
+
+    <!-- Background and Surface -->
+    <color name="onBackground">#121212</color>  <!-- Dark Gray for text -->
+    <color name="surface">#FFFFFF</color>  <!-- White Cards, Buttons -->
+    <color name="onSurface">#000000</color>  <!-- Black Text on Surface -->
+
+    <!-- Text Colors -->
+    <color name="textPrimary">#212121</color>  <!-- Dark Gray Text -->
+    <color name="textSecondary">#757575</color>  <!-- Lighter Gray Text -->
+
+    <!-- Error Color -->
+    <color name="error">#B00020</color>  <!-- Strong Red for Errors -->
+    <color name="onError">#FFFFFF</color>  <!-- White Text on Error -->
+
+    <!-- Additional Colors -->
+    <color name="success">#4CAF50</color>  <!-- Green Success -->
+    <color name="warning">#FFC107</color>  <!-- Yellow Warning -->
+    <color name="info">#2196F3</color>  <!-- Blue Info -->
 </resources>

@@ -1,6 +1,7 @@
 package com.example.oujdashop;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 
@@ -23,6 +24,12 @@ public class SplashScreen extends AppCompatActivity {
             return insets;
         });
         new Handler().postDelayed(()->{
+            SharedPreferences sharedPreferences = getSharedPreferences("oujdaShop",MODE_PRIVATE);
+            if (sharedPreferences.getInt("userId",0) == 0){
+                startActivity(new Intent(this, LoginActivity.class));
+                finish();
+                return;
+            }
             startActivity(new Intent(this, MainActivity.class));
             finish();
         },3000);

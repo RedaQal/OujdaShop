@@ -18,6 +18,11 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
     db.execSQL("CREATE TABLE IF NOT EXISTS users(id INTEGER PRIMARY KEY AUTOINCREMENT, nom TEXT, prenom TEXT, email TEXT, password TEXT)");
+    db.execSQL("CREATE TABLE IF NOT EXISTS categories(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, description TEXT, image TEXT)");
+    db.execSQL("INSERT INTO categories (name, description, image) VALUES \n" +
+            "('Electronics', 'Devices and gadgets', 'electro')," +
+            "('Clothing', 'Men and Women fashion', 'clothes')," +
+            "('Toys', 'good toys for your children', 'toys');");
     }
 
     @Override

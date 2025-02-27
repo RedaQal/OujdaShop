@@ -12,6 +12,21 @@ public class UserDAO {
     public UserDAO(Context context) {
         this.dbHelper = DBHelper.getInstance(context);
     }
+    public User getUser(int id) {
+        String selectQuery = "SELECT * FROM users WHERE id = ?";
+        try (SQLiteDatabase db = dbHelper.getReadableDatabase()){
+            String[] values = {String.valueOf(id)};
+            Cursor cursor = db.rawQuery(selectQuery, values);
+            if (cursor != null){
+                if (cursor.moveToNext()){
+                    User user = new User(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4));
+                    cursor.close();
+                    return user;
+                }
+            }
+        }
+        return null;
+    }
     public boolean createUser(User user) {
         String insertQuery = "INSERT INTO users (nom, prenom, email, password) VALUES (?, ?, ?, ?)";
         try (SQLiteDatabase db = dbHelper.getWritableDatabase()) {

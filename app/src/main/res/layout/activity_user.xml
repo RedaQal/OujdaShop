@@ -1,10 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".UserActivity">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="271dp"
+        android:layout_marginBottom="20dp"
+        android:background="@color/primary"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/userImage"
+            android:layout_gravity="center"
+            android:layout_margin="20dp"
+            android:layout_width="157dp"
+            android:layout_height="157dp"
+            android:background="@drawable/color_circle_white"
+            app:srcCompat="@drawable/full_logo" />
+
+        <TextView
+            android:id="@+id/userName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="User Name"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="4dp" />
+
+        <TextView
+            android:id="@+id/userEmail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="User Email"
+            android:textSize="18sp"
+            android:layout_marginBottom="4dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <EditText
+            android:id="@+id/mdpActuel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="mot de passe actuel"
+            android:inputType="textPassword" />
+
+        <EditText
+            android:id="@+id/mdpNouveau"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="mot de passe nouveau"
+            android:inputType="textPassword" />
+
+        <EditText
+            android:id="@+id/mdpConfirmer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="confirmer le mot de passe"
+            android:inputType="textPassword" />
+        <Button
+            android:id="@+id/modifierMdpBtn"
+            android:layout_width="255dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/primary"
+            android:textColor="@android:color/white"
+            android:text="modifier le mot de passe" />
+    </LinearLayout>
+
+</LinearLayout>

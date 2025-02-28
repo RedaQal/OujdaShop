@@ -308,6 +308,9 @@ public class ProductActivity extends AppCompatActivity {
             startActivity(new Intent(this, LoginActivity.class));
             finish();
             return true;
+        }else if (item.getItemId() == R.id.profile) {
+            startActivity(new Intent(this, UserActivity.class));
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }

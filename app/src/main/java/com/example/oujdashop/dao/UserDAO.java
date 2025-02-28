@@ -27,6 +27,17 @@ public class UserDAO {
         }
         return null;
     }
+    public Boolean updateUser(User user) {
+        String updateQuery = "UPDATE users SET nom = ?, prenom = ?, email = ?, password = ? WHERE id = ?";
+        try (SQLiteDatabase db = dbHelper.getWritableDatabase()) {
+            String[] values = {user.getNom(), user.getPrenom(), user.getEmail(), user.getPassword(), String.valueOf(user.getId())};
+            db.execSQL(updateQuery, values);
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
     public boolean createUser(User user) {
         String insertQuery = "INSERT INTO users (nom, prenom, email, password) VALUES (?, ?, ?, ?)";
         try (SQLiteDatabase db = dbHelper.getWritableDatabase()) {

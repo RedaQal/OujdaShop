@@ -7,16 +7,18 @@ public class Product {
     private float price;
     private String image;
     private Category category;
+    private String barcode;
 
-    public Product(int id, String name, String description, float price, String image, Category category) {
+    public Product(int id, String name, String description, float price, String image, Category category, String barcode) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;
         this.image = image;
         this.category = category;
+        this.barcode = barcode;
     }
-    public Product(String name, String description, float price, String image, Category category) {
+    public Product(String name, String description, float price, String image, Category category, String barcode) {
         this.name = name;
         this.description = description;
         this.price = price;

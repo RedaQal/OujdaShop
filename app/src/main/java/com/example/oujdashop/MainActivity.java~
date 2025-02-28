@@ -297,10 +297,7 @@ private void showUpdateCategoryDialog(int position) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
         return true;
     }
-    private void openCameraForBarcodeScan() {
-        Intent intent = new Intent(this, BarcodeScannerActivity.class);
-        startActivity(intent);
-    }
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.logout) {

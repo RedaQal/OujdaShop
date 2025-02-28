@@ -19,7 +19,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
     db.execSQL("CREATE TABLE IF NOT EXISTS users(id INTEGER PRIMARY KEY AUTOINCREMENT, nom TEXT, prenom TEXT, email TEXT, password TEXT,image TEXT)");
     db.execSQL("CREATE TABLE IF NOT EXISTS categories(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, description TEXT, image TEXT)");
-    db.execSQL("CREATE TABLE IF NOT EXISTS products(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, description TEXT, price REAL, image TEXT, category_id INTEGER, FOREIGN KEY(category_id) REFERENCES categories(id))");
+    db.execSQL("CREATE TABLE IF NOT EXISTS products(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, description TEXT, price REAL, image TEXT, category_id INTEGER, barcode TEXT ,FOREIGN KEY(category_id) REFERENCES categories(id))");
     db.execSQL("INSERT INTO categories (name, description, image) VALUES \n" +
             "('Electronics', 'Devices and gadgets', 'electro')," +
             "('Clothing', 'Men and Women fashion', 'clothes')," +

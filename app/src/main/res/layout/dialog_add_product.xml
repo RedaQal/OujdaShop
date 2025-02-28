@@ -28,6 +28,12 @@
         android:layout_height="wrap_content"
         android:hint="Prix du produit"
         android:inputType="number" />
+    <EditText
+        android:id="@+id/editTextBarcode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="code barre du produit"
+        android:inputType="text" />
 
     <!-- Image View to display selected image -->
     <ImageView

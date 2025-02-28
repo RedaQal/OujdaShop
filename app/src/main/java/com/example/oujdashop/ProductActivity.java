@@ -94,6 +94,7 @@ public class ProductActivity extends AppCompatActivity {
         EditText productNameEditText = dialogView.findViewById(R.id.editTextName);
         EditText productDescriptionEditText = dialogView.findViewById(R.id.editTextDescription);
         EditText productPriceEditText = dialogView.findViewById(R.id.editTextPrice);
+        EditText editTextBarcode = dialogView.findViewById(R.id.editTextBarcode);
         dialogImageView.setOnClickListener(v -> checkAndRequestPermissions());
         new AlertDialog.Builder(this)
                 .setTitle("Ajouter produit")
@@ -102,6 +103,7 @@ public class ProductActivity extends AppCompatActivity {
                     String productName = productNameEditText.getText().toString();
                     String productDescription = productDescriptionEditText.getText().toString();
                     float productPrice = Float.parseFloat(productPriceEditText.getText().toString());
+                    String productBarcode = editTextBarcode.getText().toString();
                     if (productName.isEmpty() || productDescription.isEmpty() || productPrice <= 0) {
                         Toast.makeText(ProductActivity.this, "Please fill all fields", Toast.LENGTH_SHORT).show();
                         return;
@@ -116,7 +118,7 @@ public class ProductActivity extends AppCompatActivity {
                         return;
                     }
                     Category category = categoryDAO.getCategory(getIntent().getIntExtra("categoryId", 0));
-                    Product product = new Product(productName, productDescription, productPrice, imagePath,category);
+                    Product product = new Product(productName, productDescription, productPrice, imagePath,category,productBarcode);
                     productDAO.createProduct(product);
                     loadProducts();
                 })

@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:fillViewport="true"
+    tools:context=".DetailsActivity">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <!-- Product Image -->
+        <ImageView
+            android:id="@+id/productImage"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/full_logo"/>
+
+        <!-- Product Name & Price -->
+        <TextView
+            android:id="@+id/productName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Gucci Sport Jacket"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:layout_marginTop="8dp" />
+        <TextView
+            android:id="@+id/productCategory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="category"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/primaryVariant"
+            android:layout_marginBottom="8dp" />
+
+        <TextView
+            android:id="@+id/productPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="$1,250"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/holo_red_dark"
+            android:layout_marginBottom="12dp" />
+
+        <!-- Color Selection -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Color:"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <RadioGroup
+            android:id="@+id/colorRadioGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp">
+
+            <RadioButton
+                android:id="@+id/colorBlue"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@drawable/color_circle_blue"
+                android:button="@android:color/transparent"
+                android:layout_marginEnd="8dp" />
+
+            <RadioButton
+                android:id="@+id/colorYellow"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@drawable/color_circle_yellow"
+                android:button="@android:color/transparent"
+                android:layout_marginEnd="8dp" />
+
+            <RadioButton
+                android:id="@+id/colorRed"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@drawable/color_circle_red"
+                android:button="@android:color/transparent"
+                />
+        </RadioGroup>
+
+        <!-- Product Details -->
+        <TextView
+            android:id="@+id/productDetails"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Product Details:"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="• Horsebit zipped track jacket\n• Classic collar\n• Chest patch pocket\n• Long sleeves\n• Front zip closure\n• Two welt pockets on the sides"
+            android:textSize="14sp"
+            android:layout_marginTop="4dp" />
+
+        <!-- Add to Cart Button -->
+        <Button
+            android:id="@+id/btnAddToCart"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Add to Cart"
+            android:backgroundTint="@color/primary"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            android:layout_marginTop="16dp" />
+
+    </LinearLayout>
+</ScrollView>

@@ -13,10 +13,10 @@ public class Category {
         this.image = image;
     }
 
-    public Category(String name, String description,String image) {
+    public Category(String name, String image, String description) {
         this.name = name;
-        this.description = description;
         this.image = image;
+        this.description = description;
     }
 
 

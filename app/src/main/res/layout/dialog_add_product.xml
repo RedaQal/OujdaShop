@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- Name Input -->
+    <EditText
+        android:id="@+id/editTextName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Nom du produit"
+        android:inputType="text" />
+
+    <!-- Description Input -->
+    <EditText
+        android:id="@+id/editTextDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Description du produit"
+        android:inputType="text" />
+
+    <!-- Price Input -->
+    <EditText
+        android:id="@+id/editTextPrice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Prix du produit"
+        android:inputType="number" />
+
+    <!-- Image View to display selected image -->
+    <ImageView
+        android:id="@+id/imageViewProductImage"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginTop="16dp"
+        android:src="@android:drawable/ic_menu_camera"
+        android:contentDescription="Product Image"
+        android:scaleType="centerCrop" />
+</LinearLayout>

@@ -65,6 +65,9 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
+        NavigationView navigationView = findViewById(R.id.navigationView);
+
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle("Category List");
         }

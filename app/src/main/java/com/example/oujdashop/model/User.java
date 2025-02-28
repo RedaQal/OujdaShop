@@ -8,6 +8,16 @@ public class User {
     private String nom;
     private String prenom;
 
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    private String image;
+
     public int getId() {
         return id;
     }
@@ -42,7 +52,7 @@ public class User {
     public void setPrenom(String prenom) {
         this.prenom = prenom;
     }
-    public User(String nom , String prenom , String email , String password){
+    public User(String nom , String prenom , String email, String password){
         this.nom = nom;
         this.prenom = prenom;
         this.email = email;
@@ -54,5 +64,13 @@ public class User {
         this.prenom = prenom;
         this.email = email;
         this.password = password;
+    }
+    public User(int id,String nom , String prenom , String email , String password , String image){
+        this.id = id;
+        this.nom = nom;
+        this.prenom = prenom;
+        this.email = email;
+        this.password = password;
+        this.image = image;
     }
 }

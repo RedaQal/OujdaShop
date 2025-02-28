@@ -30,7 +30,7 @@ public class UserDAO {
     public Boolean updateUser(User user) {
         String updateQuery = "UPDATE users SET nom = ?, prenom = ?, email = ?, password = ? ,image = ? WHERE id = ?";
         try (SQLiteDatabase db = dbHelper.getWritableDatabase()) {
-            String[] values = {user.getNom(), user.getPrenom(), user.getEmail(), user.getPassword(),user.getImage(),String.valueOf(user.getId())};
+            String[] values = {user.getNom(), user.getPrenom(), user.getEmail(), user.getPassword(), String.valueOf(user.getId()), user.getImage()};
             db.execSQL(updateQuery, values);
             return true;
         }catch (Exception e){

@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle("Category List");
+            getSupportActionBar().setTitle("Catégories");
         }
 
         fab = findViewById(R.id.fab);
@@ -112,9 +112,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void showDeleteConfirmationDialog(int position) {
         new AlertDialog.Builder(this)
-                .setTitle("Delete Category")
-                .setMessage("Are you sure you want to delete " + categories.get(position).getName() + "?")
-                .setPositiveButton("Yes", (dialog, which) -> {
+                .setTitle("Supprimer la catégorie")
+                .setMessage("Etes-vous sûr de vouloir supprimer " + categories.get(position).getName() + "?")
+                .setPositiveButton("Oui", (dialog, which) -> {
                     // Delete the image file
                     String imagePath = categories.get(position).getImage();
                     if (imagePath != null && !imagePath.isEmpty()) {
@@ -128,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
                     loadCategories();
                     Toast.makeText(this, "Category deleted", Toast.LENGTH_SHORT).show();
                 })
-                .setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss())
+                .setNegativeButton("Annuler", (dialog, which) -> dialog.dismiss())
                 .show();
     }
 private void showUpdateCategoryDialog(int position) {
@@ -154,13 +154,13 @@ private void showUpdateCategoryDialog(int position) {
         dialogImageView.setOnClickListener(v -> checkAndRequestPermissions());
         // Create the dialog
         new AlertDialog.Builder(this)
-                .setTitle("Update Category")
+                .setTitle("Modifier Categorie")
                 .setView(dialogView)
-                .setPositiveButton("Update", (dialog, which) -> {
+                .setPositiveButton("Modifier", (dialog, which) -> {
                     String updatedName = nameEditText.getText().toString();
                     String updatedDescription = descriptionEditText.getText().toString();
                     if (updatedName.isEmpty() || updatedDescription.isEmpty()) {
-                        Toast.makeText(MainActivity.this, "Please fill all fields", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
                         return;
                     }
                     // Save the new image (if selected) or retain the current one
@@ -216,24 +216,20 @@ private void showUpdateCategoryDialog(int position) {
     }
     private String saveImageToInternalStorage(Uri imageUri) {
         try {
-            // Open an input stream from the URI
             InputStream inputStream = getContentResolver().openInputStream(imageUri);
             if (inputStream == null) {
                 Toast.makeText(this, "Failed to open image stream", Toast.LENGTH_SHORT).show();
                 return null;
             }
 
-            // Create a directory for your app's images (if it doesn't exist)
             File directory = new File(getFilesDir(), "category_images");
             if (!directory.exists()) {
                 directory.mkdirs();
             }
 
-            // Generate a unique file name
             String fileName = "category_" + System.currentTimeMillis() + ".jpg";
             File file = new File(directory, fileName);
 
-            // Write the image to the file
             FileOutputStream outputStream = new FileOutputStream(file);
             byte[] buffer = new byte[1024];
             int bytesRead;
@@ -243,7 +239,6 @@ private void showUpdateCategoryDialog(int position) {
             outputStream.close();
             inputStream.close();
 
-            // Return the file path
             return file.getAbsolutePath();
         } catch (Exception e) {
             e.printStackTrace();

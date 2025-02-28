@@ -128,6 +128,7 @@ public class ProductActivity extends AppCompatActivity {
                 .setTitle("Supprimer produit")
                 .setMessage("Etes-vous sur de vouloir supprimer " + products.get(position).getName() + "?")
                 .setPositiveButton("Oui", (dialog, which) -> {
+                    // Delete the image file
                     String imagePath = products.get(position).getImage();
                     if (imagePath != null && !imagePath.isEmpty()) {
                         File imageFile = new File(imagePath);
@@ -135,6 +136,7 @@ public class ProductActivity extends AppCompatActivity {
                             imageFile.delete();
                         }
                     }
+                    // Delete the product from the database
                     productDAO.deleteProduct(products.get(position).getId());
                     loadProducts();
                     Toast.makeText(this, "prduit supprime", Toast.LENGTH_SHORT).show();
@@ -143,15 +145,19 @@ public class ProductActivity extends AppCompatActivity {
                 .show();
     }
     private void showUpdateProductDialog(int position) {
+        // Get the product to update
         Product productToUpdate = products.get(position);
+        // Create the dialog view
         View dialogView = getLayoutInflater().inflate(R.layout.dialog_add_product, null);
         EditText productNameEditText = dialogView.findViewById(R.id.editTextName);
         EditText productDescriptionEditText = dialogView.findViewById(R.id.editTextDescription);
         EditText productPriceEditText = dialogView.findViewById(R.id.editTextPrice);
         dialogImageView = dialogView.findViewById(R.id.imageViewProductImage);
+        // Pre-fill the fields with the current product details
         productNameEditText.setText(productToUpdate.getName());
         productDescriptionEditText.setText(productToUpdate.getDescription());
         productPriceEditText.setText(String.valueOf(productToUpdate.getPrice()));
+        // Load the current image (if it exists)
         String imagePath = productToUpdate.getImage();
         if (imagePath != null && !imagePath.isEmpty()) {
             File imageFile = new File(imagePath);
@@ -193,21 +199,24 @@ public class ProductActivity extends AppCompatActivity {
     }
     private String saveImageToInternalStorage(Uri imageUri) {
         try {
+            // Open an input stream from the URI
             InputStream inputStream = getContentResolver().openInputStream(imageUri);
             if (inputStream == null) {
                 Toast.makeText(this, "Failed to open image stream", Toast.LENGTH_SHORT).show();
                 return null;
             }
 
-
+            // Create a directory for your app's images (if it doesn't exist)
             File directory = new File(getFilesDir(), "product_images");
             if (!directory.exists()) {
                 directory.mkdirs();
             }
 
+            // Generate a unique file name
             String fileName = "product_" + System.currentTimeMillis() + ".jpg";
             File file = new File(directory, fileName);
 
+            // Write the image to the file
             FileOutputStream outputStream = new FileOutputStream(file);
             byte[] buffer = new byte[1024];
             int bytesRead;
@@ -217,6 +226,7 @@ public class ProductActivity extends AppCompatActivity {
             outputStream.close();
             inputStream.close();
 
+            // Return the file path
             return file.getAbsolutePath();
         } catch (Exception e) {
             e.printStackTrace();

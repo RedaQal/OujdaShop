@@ -12,7 +12,6 @@
         android:layout_width="match_parent"
         android:layout_height="271dp"
         android:layout_marginBottom="20dp"
-        android:background="@color/primary"
         android:gravity="center"
         android:orientation="vertical">
 
@@ -23,7 +22,8 @@
             android:layout_width="157dp"
             android:layout_height="157dp"
             android:background="@drawable/color_circle_white"
-            app:srcCompat="@drawable/full_logo" />
+            app:srcCompat="@drawable/full_logo"
+            android:scaleType="centerCrop"/>
 
         <TextView
             android:id="@+id/userName"
@@ -51,29 +51,45 @@
         android:orientation="vertical"
         android:padding="20dp">
 
-        <EditText
-            android:id="@+id/mdpActuel"
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="mot de passe actuel"
-            android:inputType="textPassword" />
+            android:hint="Mot de passe actuel"
+            app:endIconMode="password_toggle">
 
-        <EditText
-            android:id="@+id/mdpNouveau"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="mot de passe nouveau"
-            android:inputType="textPassword" />
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/mdpActuel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <EditText
-            android:id="@+id/mdpConfirmer"
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="confirmer le mot de passe"
-            android:inputType="textPassword" />
+            android:hint="Mot de passe nouveau"
+            app:endIconMode="password_toggle">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/mdpNouveau"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Confirmer le mot de passe"
+            app:endIconMode="password_toggle">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/mdpConfirmer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
         <Button
             android:id="@+id/modifierMdpBtn"
             android:layout_width="255dp"
@@ -81,6 +97,13 @@
             android:backgroundTint="@color/primary"
             android:textColor="@android:color/white"
             android:text="modifier le mot de passe" />
+        <Button
+            android:id="@+id/modifierImageBtn"
+            android:layout_width="255dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/primary"
+            android:textColor="@android:color/white"
+            android:text="modifier l'image" />
     </LinearLayout>
 
 </LinearLayout>

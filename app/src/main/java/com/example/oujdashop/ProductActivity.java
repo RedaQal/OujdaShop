@@ -150,10 +150,12 @@ public class ProductActivity extends AppCompatActivity {
         EditText productNameEditText = dialogView.findViewById(R.id.editTextName);
         EditText productDescriptionEditText = dialogView.findViewById(R.id.editTextDescription);
         EditText productPriceEditText = dialogView.findViewById(R.id.editTextPrice);
+        EditText editTextBarcode = dialogView.findViewById(R.id.editTextBarcode);
         dialogImageView = dialogView.findViewById(R.id.imageViewProductImage);
         productNameEditText.setText(productToUpdate.getName());
         productDescriptionEditText.setText(productToUpdate.getDescription());
         productPriceEditText.setText(String.valueOf(productToUpdate.getPrice()));
+        editTextBarcode.setText(productToUpdate.getBarcode());
         String imagePath = productToUpdate.getImage();
         if (imagePath != null && !imagePath.isEmpty()) {
             File imageFile = new File(imagePath);
@@ -170,6 +172,7 @@ public class ProductActivity extends AppCompatActivity {
                     String productName = productNameEditText.getText().toString();
                     String productDescription = productDescriptionEditText.getText().toString();
                     float productPrice = Float.parseFloat(productPriceEditText.getText().toString());
+                    String productBarcode = editTextBarcode.getText().toString();
                     if (productName.isEmpty() || productDescription.isEmpty() || productPrice <= 0) {
                         Toast.makeText(ProductActivity.this, "Please fill all fields", Toast.LENGTH_SHORT).show();
                         return;
@@ -187,6 +190,7 @@ public class ProductActivity extends AppCompatActivity {
                     productToUpdate.setDescription(productDescription);
                     productToUpdate.setPrice(productPrice);
                     productToUpdate.setImage(NewimagePath);
+                    productToUpdate.setBarcode(productBarcode);
                     productDAO.updateProduct(productToUpdate);
                     loadProducts();
                 })
@@ -292,6 +296,10 @@ public class ProductActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.main_menu, menu);
         return true;
     }
+    private void openCameraForBarcodeScan() {
+        Intent intent = new Intent(this, BarcodeScannerActivity.class);
+        startActivity(intent);
+    }
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.logout) {
@@ -303,6 +311,10 @@ public class ProductActivity extends AppCompatActivity {
         }else if (item.getItemId() == R.id.profile) {
             startActivity(new Intent(this, UserActivity.class));
             return true;
+        } else if (item.getItemId() == R.id.scanner) {
+            openCameraForBarcodeScan();
+            return true;
+
         }
         return super.onOptionsItemSelected(item);
     }

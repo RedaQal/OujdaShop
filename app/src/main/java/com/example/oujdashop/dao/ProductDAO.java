@@ -42,9 +42,9 @@ public class ProductDAO {
         }
     }
     public boolean updateProduct(Product product) {
-        String updateQuery = "UPDATE products SET name = ?, description = ?, price = ?,image = ? , category_id = ? WHERE id = ?";
+        String updateQuery = "UPDATE products SET name = ?, description = ?, price = ?,image = ? , category_id = ? ,barcode = ? WHERE id = ?";
         try (SQLiteDatabase db = dbHelper.getWritableDatabase()) {
-            String[] values = {product.getName(), product.getDescription(), String.valueOf(product.getPrice()),product.getImage(),String.valueOf(product.getCategory().getId()), String.valueOf(product.getId())};
+            String[] values = {product.getName(), product.getDescription(), String.valueOf(product.getPrice()),product.getImage(),String.valueOf(product.getCategory().getId()),product.getBarcode(), String.valueOf(product.getId())};
             db.execSQL(updateQuery, values);
             return true;
         } catch (Exception e) {

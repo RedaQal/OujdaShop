@@ -1,94 +1,151 @@
 package com.example.oujdashop;
 
-import android.content.pm.PackageManager;
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
+import androidx.camera.core.CameraSelector;
+import androidx.camera.core.ImageAnalysis;
+import androidx.camera.core.Preview;
+import androidx.camera.lifecycle.ProcessCameraProvider;
+import androidx.camera.view.PreviewView;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.LifecycleOwner;
 
 import com.example.oujdashop.dao.ProductDAO;
 import com.example.oujdashop.model.Product;
-import com.google.mlkit.vision.barcode.BarcodeScannerOptions;
-import com.google.mlkit.vision.barcode.BarcodeScanning;
+import com.google.common.util.concurrent.ListenableFuture;
 import com.google.mlkit.vision.barcode.common.Barcode;
-import com.google.mlkit.vision.common.InputImage;
 import com.google.mlkit.vision.barcode.BarcodeScanner;
-import android.graphics.Bitmap;
-import android.provider.MediaStore;
-import android.content.Intent;
+import com.google.mlkit.vision.barcode.BarcodeScanning;
+import com.google.mlkit.vision.common.InputImage;
+
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class BarcodeScannerActivity extends AppCompatActivity {
 
-    private static final int CAMERA_PERMISSION_REQUEST = 101;
-    private static final int CAMERA_REQUEST_CODE = 100;
-    private ProductDAO productDAO;
+    private PreviewView previewView;
+    private TextView barcodeResult;
+    private ExecutorService cameraExecutor;
+    private ImageAnalysis imageAnalysis;
+    private boolean isScanning = true; // Drapeau pour contrôler la numérisation
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
-            openCamera();
-        } else {
-            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.CAMERA}, CAMERA_PERMISSION_REQUEST);
-        }
-        productDAO = new ProductDAO(this);
+        setContentView(R.layout.activity_barcode_scanner);
+
+        previewView = findViewById(R.id.previewView);
+        barcodeResult = findViewById(R.id.barcodeResult);
+
+        // Initialisation de CameraX
+        startCamera();
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == CAMERA_PERMISSION_REQUEST && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            openCamera();
-        } else {
-            Toast.makeText(this, "Camera permission denied", Toast.LENGTH_SHORT).show();
-            finish();
-        }
-    }
+    private void startCamera() {
+        ListenableFuture<ProcessCameraProvider> cameraProviderFuture = ProcessCameraProvider.getInstance(this);
 
-    private void openCamera() {
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(intent, CAMERA_REQUEST_CODE);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == CAMERA_REQUEST_CODE && resultCode == RESULT_OK && data != null) {
-            Bundle extras = data.getExtras();
-            if (extras != null) {
-                Bitmap bitmap = (Bitmap) extras.get("data");
-                scanBarcode(bitmap);
-            } else {
-                Toast.makeText(this, "Failed to capture image", Toast.LENGTH_SHORT).show();
+        cameraProviderFuture.addListener(() -> {
+            try {
+                // Lier la caméra au cycle de vie
+                ProcessCameraProvider cameraProvider = cameraProviderFuture.get();
+                bindCameraUseCases(cameraProvider);
+            } catch (ExecutionException | InterruptedException e) {
+                Log.e("BarcodeScanner", "Erreur d'initialisation de la caméra : " + e.getMessage());
+                Toast.makeText(this, "Erreur d'initialisation de la caméra", Toast.LENGTH_SHORT).show();
             }
-        }
-    }
-    private void scanBarcode(Bitmap bitmap) {
-        if (bitmap == null) {
-            Toast.makeText(this, "Image capture failed", Toast.LENGTH_SHORT).show();
-            return;
-        }
+        }, ContextCompat.getMainExecutor(this));
 
-        InputImage image = InputImage.fromBitmap(bitmap, 0);
-        BarcodeScanner scanner = BarcodeScanning.getClient(new BarcodeScannerOptions.Builder()
-                .setBarcodeFormats(Barcode.FORMAT_ALL_FORMATS)
-                .build());
-
-        scanner.process(image)
-                .addOnSuccessListener(barcodes -> {
-                    if (!barcodes.isEmpty()) {
-                        String value = barcodes.get(0).getRawValue();
-
-
-                        finish(); // Close activity
-                    } else {
-                        Toast.makeText(this, "No barcode detected", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .addOnFailureListener(e -> {
-                    Toast.makeText(this, "Error scanning barcode: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                });
+        // Initialisation de l'exécuteur de la caméra
+        cameraExecutor = Executors.newSingleThreadExecutor();
     }
 
+    private void bindCameraUseCases(@NonNull ProcessCameraProvider cameraProvider) {
+        // Configuration de l'aperçu de la caméra
+        Preview preview = new Preview.Builder().build();
+        preview.setSurfaceProvider(previewView.getSurfaceProvider());
+
+        // Configuration de l'analyse d'image (numérisation de code-barres)
+        imageAnalysis = new ImageAnalysis.Builder()
+                .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
+                .build();
+
+        imageAnalysis.setAnalyzer(cameraExecutor, imageProxy -> {
+            if (!isScanning) {
+                imageProxy.close(); // Fermer le proxy d'image si la numérisation est en pause
+                return;
+            }
+
+            @SuppressLint("UnsafeOptInUsageError")
+            InputImage image = InputImage.fromMediaImage(
+                    imageProxy.getImage(), imageProxy.getImageInfo().getRotationDegrees()
+            );
+
+            // Initialisation du lecteur de code-barres
+            BarcodeScanner scanner = BarcodeScanning.getClient();
+            scanner.process(image)
+                    .addOnSuccessListener(barcodes -> {
+                        for (Barcode barcode : barcodes) {
+                            String rawValue = barcode.getRawValue();
+                            if (rawValue != null) {
+                                // Mettre en pause la numérisation
+                                isScanning = false;
+
+                                // Mettre à jour l'interface utilisateur avec le code-barres scanné
+                                runOnUiThread(() -> barcodeResult.setText("Scanné : " + rawValue));
+
+                                // Vérifier la base de données
+                                ProductDAO productDAO = new ProductDAO(BarcodeScannerActivity.this);
+                                Product product = productDAO.findProductByCodeBarre(rawValue);
+                                if (product != null) {
+                                    // Produit trouvé, naviguer vers l'activité DetailsActivity
+                                    Intent intent = new Intent(BarcodeScannerActivity.this, DetailsActivity.class);
+                                    intent.putExtra("productId", product.getId());
+                                    startActivity(intent);
+                                    finish(); // Fermer l'activité du lecteur de code-barres
+                                } else {
+                                    // Produit non trouvé, afficher un toast et reprendre la numérisation
+                                    runOnUiThread(() -> Toast.makeText(BarcodeScannerActivity.this, "Produit non trouvé", Toast.LENGTH_SHORT).show());
+
+                                    // Reprendre la numérisation après un délai
+                                    new Handler().postDelayed(() -> {
+                                        isScanning = true; // Reprendre la numérisation
+                                    }, 2000); // Délai de 2 secondes avant de reprendre
+                                }
+                            }
+                        }
+                    })
+                    .addOnFailureListener(e -> {
+                        Log.e("BarcodeScanner", "Erreur lors de la numérisation du code-barres : " + e.getMessage());
+                    })
+                    .addOnCompleteListener(task -> imageProxy.close());
+        });
+
+        // Sélectionner la caméra arrière
+        CameraSelector cameraSelector = new CameraSelector.Builder()
+                .requireLensFacing(CameraSelector.LENS_FACING_BACK)
+                .build();
+
+        // Lier la caméra au cycle de vie
+        cameraProvider.unbindAll();
+        cameraProvider.bindToLifecycle(
+                (LifecycleOwner) this, cameraSelector, preview, imageAnalysis);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // Arrêter l'exécuteur de la caméra
+        if (cameraExecutor != null) {
+            cameraExecutor.shutdown();
+        }
+    }
 }
